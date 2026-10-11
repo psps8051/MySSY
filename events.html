@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Events · स्वास्थ्यसिद्धी योग</title>
+  <link rel="stylesheet" href="style.css"/>
+  <style>
+    .marathi-title {
+      font-size: 2.125rem; font-weight: 700; color: var(--charcoal);
+      line-height: 1.2; margin-bottom: 0.2rem;
+    }
+    .english-sub {
+      font-size: 0.845rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--terracotta); font-weight: 500; margin-bottom: 1.1rem;
+      display: block;
+    }
+    .event-block {
+      background: var(--white); border-radius: 20px; overflow: hidden;
+      box-shadow: 0 4px 28px rgba(14,34,14,0.08);
+      margin-bottom: 3.5rem;
+    }
+    .event-block-header {
+      padding: 2rem 2.5rem 1.5rem;
+      border-bottom: 1px solid var(--sand);
+      display: flex; align-items: flex-start; gap: 1.25rem;
+    }
+    .event-emoji-badge {
+      width: 60px; height: 60px; border-radius: 16px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center; font-size: 2.025rem;
+    }
+    .event-desc {
+      font-size: 1.055rem; font-weight: 300; line-height: 1.85; color: var(--warm-gray);
+      margin-bottom: 1.25rem; max-width: 680px;
+    }
+    .event-highlights {
+      display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.25rem;
+    }
+    .ev-tag {
+      font-size: 0.845rem; font-weight: 500; letter-spacing: 0.1em;
+      text-transform: uppercase; padding: 0.35rem 0.9rem;
+      border-radius: 99px; background: var(--terr-pale); color: var(--terracotta);
+      border: 1px solid rgba(200,134,26,0.2);
+    }
+    .ev-tag.green {
+      background: var(--sage-pale); color: var(--sage);
+      border-color: rgba(58,125,53,0.25);
+    }
+
+    /* ── Photo grid ── */
+    .event-photos {
+      padding: 1.75rem 2.5rem 2rem;
+    }
+    .photos-label {
+      font-size: 0.775rem; letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--warm-gray2); margin-bottom: 1rem; display: block;
+    }
+    .photo-grid {
+      display: grid; gap: 12px;
+    }
+    .photo-grid.g4 { grid-template-columns: 2fr 1fr 1fr 1fr; }
+    .photo-grid.g3 { grid-template-columns: 1fr 1fr 1fr; }
+    .photo-grid.g5 { grid-template-columns: 2fr 1fr 1fr; grid-template-rows: auto auto; }
+
+    .photo-slot {
+      border-radius: 10px; overflow: hidden; position: relative; cursor: pointer;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .photo-slot:hover { transform: scale(1.025); box-shadow: 0 10px 32px rgba(14,34,14,0.14); }
+    .photo-slot .ph { width: 100%; }
+    .photo-slot.tall .ph { min-height: 320px; }
+    .photo-slot.med  .ph { min-height: 200px; }
+    .photo-slot.short .ph { min-height: 148px; }
+    .photo-slot.span2 { grid-row: span 2; }
+
+    .photo-slot-label {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      background: linear-gradient(to top, rgba(14,34,14,0.55), transparent);
+      padding: 0.75rem; font-size: 0.845rem; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--white); opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .photo-slot:hover .photo-slot-label { opacity: 1; }
+
+    /* accent top bar per event */
+    .accent-bar { height: 4px; width: 100%; }
+
+    @media (max-width: 760px) {
+      .photo-grid.g4,
+      .photo-grid.g3,
+      .photo-grid.g5 { grid-template-columns: 1fr 1fr; }
+      .photo-slot.span2 { grid-row: span 1; }
+      .photo-slot.tall .ph,
+      .photo-slot.med  .ph { min-height: 160px; }
+      .event-block-header { flex-direction: column; gap: 0.75rem; }
+    }
+    @media (max-width: 480px) {
+      .photo-grid.g4,
+      .photo-grid.g3,
+      .photo-grid.g5 { grid-template-columns: 1fr; }
+      .event-block-header, .event-photos { padding: 1.25rem; }
+    }
+  </style>
+
+<style>
+.img-fallback-gold {
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:600;
+  color:#C8861A;text-align:center;padding:0.75rem;z-index:0;
+}
+.img-fallback-green {
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:600;
+  color:#2D6A2D;text-align:center;padding:0.75rem;z-index:0;
+}
+.img-fallback-circle-gold {
+  position:absolute;display:flex;align-items:center;justify-content:center;
+  font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:700;
+  color:#C8861A;z-index:0;
+}
+.img-fallback-circle-green {
+  position:absolute;display:flex;align-items:center;justify-content:center;
+  font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:700;
+  color:#2D6A2D;z-index:0;
+}
+.img-cover {
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;
+}
+.img-cover-circle {
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:50%;z-index:1;
+}
+</style>
+
+  <style>
+    /* Event photo grids: explicit tracks prevent oversized/collapsed image slots. */
+    .event-photo-grid { align-items: stretch; grid-auto-flow: row; }
+    /* Suryanamaskar: one featured image on the left, three supporting images on the right. */
+    .event-photo-grid.event-suryanamaskar {
+      grid-template-columns: minmax(0, 1.15fr) repeat(2, minmax(0, 1fr));
+      grid-template-rows: clamp(170px, 18vw, 230px) clamp(170px, 18vw, 230px);
+      grid-auto-rows: auto;
+    }
+    .event-photo-grid.event-suryanamaskar > .photo-slot:first-child {
+      grid-column: 1;
+      grid-row: 1 / span 2;
+    }
+    .event-photo-grid.event-suryanamaskar > .photo-slot:nth-child(2) {
+      grid-column: 2;
+      grid-row: 1;
+    }
+    .event-photo-grid.event-suryanamaskar > .photo-slot:nth-child(3) {
+      grid-column: 3;
+      grid-row: 1;
+    }
+    .event-photo-grid.event-suryanamaskar > .photo-slot:nth-child(4) {
+      grid-column: 2 / span 2;
+      grid-row: 2;
+    }
+    /* International Yoga Day: four photos in the outer columns; portrait YD1 in the centre. */
+    .event-photo-grid.event-yogaday {
+      grid-template-columns: minmax(0, 1fr) minmax(0, .82fr) minmax(0, 1fr);
+      grid-template-rows: clamp(160px, 17vw, 220px) clamp(160px, 17vw, 220px);
+      grid-auto-rows: auto;
+    }
+    .event-photo-grid.event-yogaday > .yoga-day-yd1 { grid-column: 2; grid-row: 1 / span 2; }
+    .event-photo-grid.event-yogaday > .yoga-day-yd2 { grid-column: 1; grid-row: 1; }
+    .event-photo-grid.event-yogaday > .yoga-day-yd3 { grid-column: 3; grid-row: 1; }
+    .event-photo-grid.event-yogaday > .yoga-day-yd4 { grid-column: 1; grid-row: 2; }
+    .event-photo-grid.event-yogaday > .yoga-day-yd5 { grid-column: 3; grid-row: 2; }
+    .event-photo-grid.event-yogaday > .yoga-day-yd1 { background: #173b24; }
+    .event-photo-grid.event-yogaday > .yoga-day-yd1 .event-photo-img { object-fit: contain; }
+    .event-photo-grid.event-yogaday > .yoga-day-yd1 .photo-placeholder {
+      color: #fff; background: #173b24;
+    }
+    .photo-slot {
+      display: block; width: 100%; min-width: 0; min-height: 0; padding: 0;
+      border: 0; background: #fef4e0; isolation: isolate; text-align: left;
+      font: inherit; color: inherit; cursor: zoom-in;
+    }
+    .event-photo-img {
+      position: absolute; inset: 0; display: block; width: 100%; height: 100%;
+      object-fit: cover; object-position: center; z-index: 1;
+      transition: transform .35s ease;
+    }
+    .photo-slot:hover .event-photo-img { transform: scale(1.035); }
+    .photo-placeholder {
+      position: absolute; inset: 0; z-index: 0; display: flex; align-items: center;
+      justify-content: center; padding: .85rem; text-align: center;
+      font-family: 'Cormorant Garamond', serif; font-weight: 600;
+      font-size: 1rem; color: #2D6A2D; background: #d4ecd4; overflow-wrap: anywhere;
+    }
+    .event-photo-grid.event-suryanamaskar .photo-placeholder { color: #C8861A; background: #fef4e0; }
+    .photo-slot-label { z-index: 2; pointer-events: none; }
+    .photo-slot:focus-visible { outline: 3px solid var(--terracotta); outline-offset: 3px; }
+
+    /* Accessible full-screen photo popup */
+    .event-photo-lightbox {
+      display: none; position: fixed; inset: 0; z-index: 2000;
+      padding: 64px 20px 24px; background: rgba(12, 18, 13, .94);
+      align-items: center; justify-content: center;
+    }
+    .event-photo-lightbox.open { display: flex; }
+    .event-photo-lightbox-inner {
+      width: min(1100px, 96vw); max-height: 100%; display: flex;
+      flex-direction: column; align-items: center; justify-content: center; gap: 12px;
+    }
+    .event-photo-lightbox-image {
+      display: block; max-width: 100%; max-height: calc(100vh - 140px);
+      width: auto; height: auto; object-fit: contain; border-radius: 10px;
+      box-shadow: 0 12px 48px rgba(0, 0, 0, .35);
+    }
+    .event-photo-lightbox-image[hidden],
+    .event-photo-lightbox-error[hidden] { display: none !important; }
+    .event-photo-lightbox-caption { margin: 0; color: #fff; text-align: center; font-size: 1rem; }
+    .event-photo-lightbox-error { color: #ffe1bd; text-align: center; }
+    .event-photo-lightbox-close {
+      position: absolute; top: 12px; right: 20px; width: 44px; height: 44px;
+      border: 1px solid rgba(255,255,255,.45); border-radius: 50%;
+      color: #fff; background: rgba(255,255,255,.08); font-size: 28px;
+      line-height: 1; cursor: pointer;
+    }
+    .event-photo-lightbox-close:hover { background: rgba(255,255,255,.2); }
+    body.event-photo-popup-open { overflow: hidden; }
+    @media (max-width: 760px) {
+      .event-photo-grid.event-suryanamaskar {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-auto-rows: clamp(135px, 32vw, 200px);
+      }
+      .event-photo-grid.event-yogaday {
+        grid-template-columns: minmax(0, 1fr) minmax(0, .9fr);
+        grid-template-rows: repeat(3, clamp(135px, 32vw, 200px));
+        grid-auto-rows: auto;
+      }
+      /* Tablet: featured image across the first row, then two columns below. */
+      .event-photo-grid.event-suryanamaskar > .photo-slot:first-child {
+        grid-row: auto;
+        grid-column: span 2;
+      }
+      .event-photo-grid.event-suryanamaskar > .photo-slot:nth-child(2),
+      .event-photo-grid.event-suryanamaskar > .photo-slot:nth-child(3) {
+        grid-column: auto;
+        grid-row: auto;
+      }
+      .event-photo-grid.event-suryanamaskar > .photo-slot:nth-child(4) {
+        grid-column: span 2;
+        grid-row: auto;
+      }
+      /* On tablets, keep portrait YD1 in column two and let it span two rows. */
+      .event-photo-grid.event-yogaday > .yoga-day-yd1 { grid-column: 2; grid-row: 1 / span 2; }
+      .event-photo-grid.event-yogaday > .yoga-day-yd2 { grid-column: 1; grid-row: 1; }
+      .event-photo-grid.event-yogaday > .yoga-day-yd3 { grid-column: 1; grid-row: 2; }
+      .event-photo-grid.event-yogaday > .yoga-day-yd4 { grid-column: 1; grid-row: 3; }
+      .event-photo-grid.event-yogaday > .yoga-day-yd5 { grid-column: 2; grid-row: 3; }
+    }
+    @media (max-width: 480px) {
+      .event-photo-grid.event-suryanamaskar,
+      .event-photo-grid.event-yogaday {
+        grid-template-columns: minmax(0, 1fr);
+        grid-template-rows: none;
+        grid-auto-rows: clamp(180px, 58vw, 280px);
+      }
+      .event-photo-grid.event-suryanamaskar > .photo-slot:first-child,
+      .event-photo-grid.event-suryanamaskar > .photo-slot:nth-child(2),
+      .event-photo-grid.event-suryanamaskar > .photo-slot:nth-child(3),
+      .event-photo-grid.event-suryanamaskar > .photo-slot:nth-child(4),
+      .event-photo-grid.event-yogaday > .photo-slot {
+        grid-column: auto;
+        grid-row: auto;
+      }
+      .event-photo-lightbox { padding: 60px 12px 18px; }
+      .event-photo-lightbox-image { max-height: calc(100vh - 135px); }
+    }
+    @media (hover: none) { .photo-slot-label { opacity: 1; } }
+
+    /* Sahal / Snehamelava: keep the two photo sets visually separate. */
+    .sahal-photo-group { margin-top: 1.75rem; }
+    .sahal-photo-group:first-of-type { margin-top: 0; }
+    .sahal-photo-group-title {
+      margin: 0 0 .9rem; color: var(--charcoal);
+      font-family: 'Cormorant Garamond', serif; font-size: 1.55rem;
+      font-weight: 600;
+    }
+    .sahal-photo-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .sahal-photo-grid .photo-slot { min-height: 0; }
+    .sahal-photo-grid .photo-slot-frame {
+      position: relative; width: 100%; aspect-ratio: 4 / 3;
+      min-height: 150px; overflow: hidden; background: #d4ecd4;
+    }
+    .sahal-photo-grid .photo-placeholder { color: #2D6A2D; background: #d4ecd4; }
+    @media (max-width: 760px) {
+      .sahal-photo-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 480px) {
+      .sahal-photo-grid { grid-template-columns: minmax(0, 1fr); }
+      .sahal-photo-grid .photo-slot-frame { aspect-ratio: 4 / 3; min-height: 180px; }
+    }
+  </style>
+
+</head>
+<body>
+<div id="nav-holder"></div>
+<div class="page-body">
+
+  <div class="page-hero">
+    <div class="page-hero-inner">
+      <div class="breadcrumb"><a href="index.html">Home</a> &nbsp;/&nbsp; Events</div>
+      <h1>Gather. Celebrate.<br><em>Grow together.</em></h1>
+      <p>Our events go beyond the mat — they build bonds, honour traditions, and bring the whole community alive throughout the year.</p>
+    </div>
+  </div>
+
+  <section class="section" style="background:var(--cream);">
+    <div class="section-inner">
+
+      <div class="reveal" style="max-width:600px; margin-bottom:4rem;">
+        <span class="section-label">Community Events</span>
+        <h2 class="section-title">Celebrations that <em>unite</em> us.</h2>
+        <p class="section-body">From the first rays of the sun on Suryanamaskar Day to the joyful celebrations throughout the year, every event at our centre strengthens the bonds of our community and brings us closer together.</p>
+      </div>
+
+      <!-- ══════════════════════════════
+           1. सूर्यनमस्कार दिन
+      ══════════════════════════════ -->
+      <div class="event-block reveal">
+        <div class="accent-bar" style="background:linear-gradient(90deg,#e09b30,#c8861a);"></div>
+        <div class="event-block-header">
+          <div class="event-emoji-badge" style="background:var(--terr-pale);">☀️</div>
+          <div class="event-block-header-content">
+            <div class="marathi-title">सूर्यनमस्कार दिन</div>
+            <span class="english-sub">Suryanamaskar Day</span>
+            <p class="event-desc">A vibrant annual celebration dedicated to Suryanamaskar — the complete salutation to the sun. Members of all batches gather at sunrise to perform 108 rounds in unison, honouring the sun's life-giving energy and the strength it builds within each of us. A high-energy, joyful morning that fills everyone with positivity for the day ahead.</p>
+          </div>
+        </div>
+        <div class="event-photos">
+          <span class="photos-label">📷 Event Photos · Click a photo to enlarge</span>
+          <div class="photo-grid event-photo-grid event-suryanamaskar">
+            <div class="photo-slot photo-featured" aria-label="Open Group Suryanamaskar photo">
+              <span class="photo-placeholder"></span>
+              <img src="./images/SN1.jpg" alt="Suryanamaskar Day" class="event-photo-img" loading="lazy" onerror="this.style.display='none';this.previousElementSibling.textContent='Image unavailable — check ./images/SN1.jpg';">
+              <span class="photo-slot-label"></span>
+            </div>
+            <div class="photo-slot">
+              <span class="photo-placeholder"></span>
+              <img src="./images/SN2.jpg" alt="Suryanamaskar Day" class="event-photo-img" loading="lazy" onerror="this.style.display='none';this.previousElementSibling.textContent='Image unavailable — check ./images/SN2.jpg';">
+              <span class="photo-slot-label"></span>
+            </div>
+            <div class="photo-slot">
+              <span class="photo-placeholder"></span>
+              <img src="./images/SN3.jpg" alt="Suryanamaskar Day" class="event-photo-img" loading="lazy" onerror="this.style.display='none';this.previousElementSibling.textContent='Image unavailable — check ./images/SN3.jpg';">
+              <span class="photo-slot-label"></span>
+            </div>
+            <div class="photo-slot">
+              <span class="photo-placeholder"></span>
+              <img src="./images/SN4.jpg" alt="Suryanamaskar Day" class="event-photo-img" loading="lazy" onerror="this.style.display='none';this.previousElementSibling.textContent='Image unavailable — check ./images/SN4.jpg';">
+              <span class="photo-slot-label"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══════════════════════════════
+           2. योगदिन
+      ══════════════════════════════ -->
+      <div class="event-block reveal">
+        <div class="accent-bar" style="background:linear-gradient(90deg,#2d6a2d,#5a9a5a);"></div>
+        <div class="event-block-header">
+          <div class="event-emoji-badge" style="background:var(--sage-pale);">🧘</div>
+          <div class="event-block-header-content">
+            <div class="marathi-title">योगदिन</div>
+            <span class="english-sub">International Yoga Day · 21 June</span>
+            <p class="event-desc">Every year on 21st June, we celebrate International Yoga Day with great enthusiasm — our largest community event. Members come together to embrace the benefits of yoga and experience its transformative power through a joyful and rejuvenating celebration.</p>
+          </div>
+        </div>
+        <div class="event-photos">
+          <span class="photos-label">📷 Event Photos · Click a photo to enlarge</span>
+          <div class="photo-grid event-photo-grid event-yogaday">
+            <div class="photo-slot photo-featured yoga-day-yd1" aria-label="Open International Yoga Day photo">
+              <span class="photo-placeholder"></span>
+              <img src="./images/YD1.jpg" alt="Yoga Day" class="event-photo-img" loading="lazy" onerror="this.style.display='none';this.previousElementSibling.textContent='Image unavailable — check ./images/YD1.jpg';">
+              <span class="photo-slot-label"></span>
+            </div>
+            <div class="photo-slot yoga-day-yd2">
+              <span class="photo-placeholder"></span>
+              <img src="./images/YD2.jpg" alt="Yoga Day" class="event-photo-img" loading="lazy" onerror="this.style.display='none';this.previousElementSibling.textContent='Image unavailable — check ./images/YD2.jpg';">
+              <span class="photo-slot-label"></span>
+            </div>
+            <div class="photo-slot yoga-day-yd3">
+              <span class="photo-placeholder"></span>
+              <img src="./images/YD3.jpg" alt="Yoga Day" class="event-photo-img" loading="lazy" onerror="this.style.display='none';this.previousElementSibling.textContent='Image unavailable — check ./images/YD3.jpg';">
+              <span class="photo-slot-label"></span>
+            </div>
+            <div class="photo-slot yoga-day-yd4">
+              <span class="photo-placeholder"></span>
+              <img src="./images/YD4.jpg" alt="Yoga Day" class="event-photo-img" loading="lazy" onerror="this.style.display='none';this.previousElementSibling.textContent='Image unavailable — check ./images/YD4.jpg';">
+              <span class="photo-slot-label"></span>
+            </div>
+            <div class="photo-slot yoga-day-yd5">
+              <span class="photo-placeholder"></span>
+              <img src="./images/YD5.jpg" alt="Yoga Day" class="event-photo-img" loading="lazy" onerror="this.style.display='none';this.previousElementSibling.textContent='Image unavailable — check ./images/YD5.jpg';">
+              <span class="photo-slot-label"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══════════════════════════════
+           3. गुरुपौर्णिमा
+      ══════════════════════════════ -->
+      <!-- SSP div class="event-block reveal">
+        <div class="accent-bar" style="background:linear-gradient(90deg,#c8861a,#e09b30);"></div>
+        <div class="event-block-header">
+          <div class="event-emoji-badge" style="background:#fdf6e3;">🙏</div>
+          <div>
+            <div class="marathi-title">गुरुपौर्णिमा</div>
+            <span class="english-sub">Guru Purnima — Honouring the Teacher</span>
+            <p class="event-desc">Gurupurnima is the most sacred and heartfelt celebration at our centre. On this full-moon day, we pause to express our deepest gratitude to our Guru — Yoga Guru Shri BB Sir — whose guidance has shaped everything we do. It is a day of reverence, reflection, and the beautiful eternal bond between teacher and student.</p>
+            <div class="event-highlights">
+              <span class="ev-tag" style="background:#fdf6e3;color:#b8862a;border-color:rgba(184,134,42,0.25);">Guru Puja &amp; Felicitation</span>
+              <span class="ev-tag" style="background:#fdf6e3;color:#b8862a;border-color:rgba(184,134,42,0.25);">Gratitude Ceremony</span>
+              <span class="ev-tag green">Special Yoga Session</span>
+              <span class="ev-tag green">Cultural Programme &amp; Prasad</span>
+            </div>
+          </div>
+        </div>
+        <div class="event-photos">
+          <span class="photos-label">📷 Event Photos</span>
+          <div class="photo-grid g4">
+            <div class="photo-slot span2 tall">
+              गुरुपौर्णिमा
+              <div style="position:relative;width:100%;height:100%;min-height:280px;background:#fef4e0;overflow:hidden;display:flex;align-items:center;justify-content:center;">
+    <span style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:600;color:#C8861A;text-align:center;padding:0.75rem;z-index:0;">गुरुपौर्णिमा · Guru Puja</span>
+    <img src="guru-1.jpg" alt="Guru Puja Ceremony" class="img-cover" onload="this.previousElementSibling.style.display='none'">
+</div>
+              <div class="photo-slot-label">Guru Puja Ceremony</div>
+            </div>
+            <div class="photo-slot short">
+              Felicitation
+              <div style="position:relative;width:100%;height:100%;min-height:148px;background:#fef4e0;overflow:hidden;display:flex;align-items:center;justify-content:center;">
+    <span style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:600;color:#C8861A;text-align:center;padding:0.75rem;z-index:0;">Felicitation</span>
+    <img src="guru-2.jpg" alt="Felicitation" class="img-cover" onload="this.previousElementSibling.style.display='none'">
+</div>
+              <div class="photo-slot-label">Felicitation</div>
+            </div>
+            <div class="photo-slot short">
+              Blessings
+              <div style="position:relative;width:100%;height:100%;min-height:148px;background:#fef4e0;overflow:hidden;display:flex;align-items:center;justify-content:center;">
+    <span style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:600;color:#C8861A;text-align:center;padding:0.75rem;z-index:0;">Group Blessings</span>
+    <img src="guru-3.jpg" alt="Group Blessings" class="img-cover" onload="this.previousElementSibling.style.display='none'">
+</div>
+              <div class="photo-slot-label">Group Blessings</div>
+            </div>
+            <div class="photo-slot short">
+              Cultural
+              <div style="position:relative;width:100%;height:100%;min-height:148px;background:#fef4e0;overflow:hidden;display:flex;align-items:center;justify-content:center;">
+    <span style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:600;color:#C8861A;text-align:center;padding:0.75rem;z-index:0;">Cultural</span>
+    <img src="guru-4.jpg" alt="Cultural Programme" class="img-cover" onload="this.previousElementSibling.style.display='none'">
+</div>
+              <div class="photo-slot-label">Cultural Programme</div>
+            </div>
+            <div class="photo-slot short">
+              Prasad
+              <div style="position:relative;width:100%;height:100%;min-height:148px;background:#fef4e0;overflow:hidden;display:flex;align-items:center;justify-content:center;">
+    <span style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:600;color:#C8861A;text-align:center;padding:0.75rem;z-index:0;">Prasad</span>
+    <img src="guru-5.jpg" alt="Community Prasad" class="img-cover" onload="this.previousElementSibling.style.display='none'">
+</div>
+              <div class="photo-slot-label">Community Prasad</div>
+            </div>
+          </div>
+        </div>
+      </div -->
+
+      <!-- ══════════════════════════════
+           4. सहल-स्नेहमेळावा
+      ══════════════════════════════ -->
+      <div class="event-block reveal">
+        <div class="accent-bar" style="background:linear-gradient(90deg,#2d6a2d,#c8861a);"></div>
+        <div class="event-block-header">
+          <div class="event-emoji-badge" style="background:var(--sage-pale);">🚌</div>
+          <div>
+            <div class="marathi-title">सहल · स्नेहमेळावा</div>
+            <span class="english-sub">Annual Outing &amp; Get-Together</span>
+            <p class="event-desc">Every year, each batch goes on a happiness trip — our beloved Sahal and Snehamelava. This annual outing is a time to step away from routine, breathe in nature, deepen friendships, and celebrate the bonds formed through shared practice on the mat. It is not just a trip — it is a reunion of hearts. A cherished tradition that members look forward to all year long.</p>
+          </div>
+        </div>
+        <div class="event-photos">
+          <span class="photos-label">📷 Event Photos · Click a photo to enlarge</span>
+
+          <section class="sahal-photo-group" aria-labelledby="sahalGroup1Title">
+            <h3 class="sahal-photo-group-title" id="sahalGroup1Title">Annual Outing</h3>
+            <div class="photo-grid sahal-photo-grid">
+            <div class="photo-slot sahal-photo-slot" tabindex="0" role="button" aria-label="Open photo: Group 1 · Photo 1">
+              <div class="photo-slot-frame">
+                <span class="photo-placeholder">Annual Outing</span>
+                <img src="./images/Retreat1.jpg" alt="Sahal outing photo 1" class="event-photo-img" loading="lazy" onerror="this.style.display='none';this.previousElementSibling.textContent='Image unavailable — check ./images/Retreat1.jpg';">
+              </div>
+              <span class="photo-slot-label">Annual Outing</span>
+            </div>
+            <div class="photo-slot sahal-photo-slot" tabindex="0" role="button" aria-label="Open photo: Group 1 · Photo 2">
+              <div class="photo-slot-frame">
+                <span class="photo-placeholder">Annual Outing</span>
+                <img src="./images/Retreat2.jpg" alt="Sahal outing photo 2" class="event-photo-img" loading="lazy" onerror="this.style.display='none';this.previousElementSibling.textContent='Image unavailable — check ./images/Retreat2.jpg';">
+              </div>
+              <span class="photo-slot-label">Annual Outing</span>
+            </div>
+            <div class="photo-slot sahal-photo-slot" tabindex="0" role="button" aria-label="Open photo: Group 1 · Photo 3">
+              <div class="photo-slot-frame">
+                <span class="photo-placeholder">Annual Outing</span>
+                <img src="./images/Retreat3.jpg" alt="Sahal outing photo 3" class="event-photo-img" loading="lazy" onerror="this.style.display='none';this.previousElementSibling.textContent='Image unavailable — check ./images/Retreat3.jpg';">
+              </div>
+              <span class="photo-slot-label">Annual Outing</span>
+            </div>
+            <div class="photo-slot sahal-photo-slot" tabindex="0" role="button" aria-label="Open photo: Group 1 · Photo 4">
+              <div class="photo-slot-frame">
+                <span class="photo-placeholder">Annual Outing</span>
+                <img src="./images/Retreat4.jpg" alt="Sahal outing photo 4" class="event-photo-img" loading="lazy" onerror="this.style.display='none';this.previousElementSibling.textContent='Image unavailable — check ./images/Retreat4.jpg';">
+              </div>
+              <span class="photo-slot-label">Annual Outing</span>
+            </div>
+            <div class="photo-slot sahal-photo-slot" tabindex="0" role="button" aria-label="Open photo: Group 1 · Photo 5">
+              <div class="photo-slot-frame">
+                <span class="photo-placeholder">Annual Outing</span>
+                <img src="./images/Retreat5.jpg" alt="Sahal outing photo 5" class="event-photo-img" loading="lazy" onerror="this.style.display='none';this.previousElementSibling.textContent='Image unavailable — check ./images/Retreat5.jpg';">
+              </div>
+              <span class="photo-slot-label">Annual Outing</span>
+            </div>
+            <div class="photo-slot sahal-photo-slot" tabindex="0" role="button" aria-label="Open photo: Group 1 · Photo 6">
+              <div class="photo-slot-frame">
+                <span class="photo-placeholder">Annual Outing</span>
+                <img src="./images/Retreat6.jpg" alt="Sahal outing photo 6" class="event-photo-img" loading="lazy" onerror="this.style.display='none';this.previousElementSibling.textContent='Image unavailable — check ./images/Retreat6.jpg';">
+              </div>
+              <span class="photo-slot-label">Annual Outing</span>
+            </div>
+            <div class="photo-slot sahal-photo-slot" tabindex="0" role="button" aria-label="Open photo: Group 1 · Photo 8">
+              <div class="photo-slot-frame">
+                <span class="photo-placeholder">Annual Outing</span>
+                <img src="./images/Retreat8.jpg" alt="Sahal outing photo 8" class="event-photo-img" loading="lazy" onerror="this.style.display='none';this.previousElementSibling.textContent='Image unavailable — check ./images/Retreat8.jpg';">
+              </div>
+              <span class="photo-slot-label">Annual Outing</span>
+            </div>
+            <div class="photo-slot sahal-photo-slot" tabindex="0" role="button" aria-label="Open photo: Group 1 · Photo 9">
+              <div class="photo-slot-frame">
+                <span class="photo-placeholder">Annual Outing</span>
+                <img src="./images/Retreat9.jpg" alt="Sahal outing photo 9" class="event-photo-img" loading="lazy" onerror="this.style.display='none';this.previousElementSibling.textContent='Image unavailable — check ./images/Retreat9.jpg';">
+              </div>
+              <span class="photo-slot-label">Annual Outing</span>
+            </div>
+            </div>
+          </section>
+
+          <section class="sahal-photo-group" aria-labelledby="sahalGroup2Title">
+            <h3 class="sahal-photo-group-title" id="sahalGroup2Title">Garba</h3>
+            <div class="photo-grid sahal-photo-grid">
+            <div class="photo-slot sahal-photo-slot" tabindex="0" role="button" aria-label="Open photo: Group 2 · Photo 1">
+              <div class="photo-slot-frame">
+                <span class="photo-placeholder">Garba</span>
+                <img src="./images/GB1.jpg" alt="Snehamelava group photo 1" class="event-photo-img" loading="lazy" onerror="this.style.display='none';this.previousElementSibling.textContent='Image unavailable — check ./images/GB1.jpg';">
+              </div>
+              <span class="photo-slot-label">Garba</span>
+            </div>
+            <div class="photo-slot sahal-photo-slot" tabindex="0" role="button" aria-label="Open photo: Group 2 · Photo 2">
+              <div class="photo-slot-frame">
+                <span class="photo-placeholder">Garba</span>
+                <img src="./images/GB2.jpg" alt="Snehamelava group photo 2" class="event-photo-img" loading="lazy" onerror="this.style.display='none';this.previousElementSibling.textContent='Image unavailable — check ./images/GB2.jpg';">
+              </div>
+              <span class="photo-slot-label">Garba</span>
+            </div>
+            <div class="photo-slot sahal-photo-slot" tabindex="0" role="button" aria-label="Open photo: Group 2 · Photo 3">
+              <div class="photo-slot-frame">
+                <span class="photo-placeholder">Garba</span>
+                <img src="./images/GB3.jpg" alt="Snehamelava group photo 3" class="event-photo-img" loading="lazy" onerror="this.style.display='none';this.previousElementSibling.textContent='Image unavailable — check ./images/GB3.jpg';">
+              </div>
+              <span class="photo-slot-label">Garba</span>
+            </div>
+            <div class="photo-slot sahal-photo-slot" tabindex="0" role="button" aria-label="Open photo: Group 2 · Photo 4">
+              <div class="photo-slot-frame">
+                <span class="photo-placeholder">Garba</span>
+                <img src="./images/GB4.jpg" alt="Snehamelava group photo 4" class="event-photo-img" loading="lazy" onerror="this.style.display='none';this.previousElementSibling.textContent='Image unavailable — check ./images/GB4.jpg';">
+              </div>
+              <span class="photo-slot-label">Garba</span>
+            </div>
+            <div class="photo-slot sahal-photo-slot" tabindex="0" role="button" aria-label="Open photo: Group 2 · Photo 5">
+              <div class="photo-slot-frame">
+                <span class="photo-placeholder">Garba</span>
+                <img src="./images/GB5.jpg" alt="Snehamelava group photo 5" class="event-photo-img" loading="lazy" onerror="this.style.display='none';this.previousElementSibling.textContent='Image unavailable — check ./images/GB5.jpg';">
+              </div>
+              <span class="photo-slot-label">Garba</span>
+            </div>
+            </div>
+          </section>
+        </div>
+      </div>
+
+    </div><!-- end section-inner -->
+  </section>
+
+  <div class="home-contact-strip reveal">
+    <h2>Want to join our next event?</h2>
+    <p>All events are open to our members. Contact us to know upcoming dates and how to participate.</p>
+    <a class="btn btn-white" href="contact.html">Get in Touch →</a>
+  </div>
+
+</div>
+
+
+
+<!-- Event photo lightbox -->
+<div class="event-photo-lightbox" id="eventPhotoLightbox" role="dialog" aria-modal="true" aria-hidden="true" aria-label="Event photo viewer">
+  <button class="event-photo-lightbox-close" id="eventPhotoLightboxClose" type="button" aria-label="Close photo">&times;</button>
+  <div class="event-photo-lightbox-inner">
+    <img class="event-photo-lightbox-image" id="eventPhotoLightboxImage" alt="" hidden>
+    <p class="event-photo-lightbox-caption" id="eventPhotoLightboxCaption"></p>
+    <p class="event-photo-lightbox-error" id="eventPhotoLightboxError" role="status" hidden>Unable to load this image. Check that the image file exists at the listed path.</p>
+  </div>
+</div>
+
+<div id="footer-holder"></div>
+<script src="shared.js"></script>
+<script>initPage('events.html');</script>
+<script>
+(function () {
+  const lightbox = document.getElementById('eventPhotoLightbox');
+  const lightboxImage = document.getElementById('eventPhotoLightboxImage');
+  const lightboxCaption = document.getElementById('eventPhotoLightboxCaption');
+  const lightboxError = document.getElementById('eventPhotoLightboxError');
+  const closeButton = document.getElementById('eventPhotoLightboxClose');
+  let lastTrigger = null;
+
+  function openEventPhoto(slot) {
+    const thumbnail = slot.querySelector('img');
+    if (!thumbnail) return;
+
+    const label = slot.querySelector('.photo-slot-label');
+    const caption = (label && label.textContent.trim()) || thumbnail.alt || 'Event photo';
+    lastTrigger = slot;
+    lightboxImage.hidden = true;
+    lightboxError.hidden = true;
+    lightboxImage.removeAttribute('src');
+    lightboxImage.alt = thumbnail.alt || caption;
+    lightboxCaption.textContent = caption;
+
+    lightboxImage.onload = function () {
+      lightboxError.hidden = true;
+      lightboxImage.hidden = false;
+    };
+    lightboxImage.onerror = function () {
+      lightboxImage.hidden = true;
+      lightboxError.hidden = false;
+    };
+    lightbox.classList.add('open');
+    lightbox.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('event-photo-popup-open');
+    lightboxImage.src = thumbnail.currentSrc || thumbnail.src;
+    closeButton.focus();
+  }
+
+  function closeEventPhoto() {
+    lightbox.classList.remove('open');
+    lightbox.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('event-photo-popup-open');
+    lightboxImage.onload = null;
+    lightboxImage.onerror = null;
+    lightboxImage.removeAttribute('src');
+    if (lastTrigger) lastTrigger.focus();
+  }
+
+  document.querySelectorAll('.photo-slot').forEach(function (slot) {
+    if (!slot.querySelector('img')) return;
+    slot.setAttribute('tabindex', '0');
+    slot.setAttribute('role', 'button');
+    const img = slot.querySelector('img');
+    const label = slot.querySelector('.photo-slot-label');
+    slot.setAttribute('aria-label', 'Open photo: ' + ((label && label.textContent.trim()) || img.alt || 'Event photo'));
+    slot.addEventListener('click', function () { openEventPhoto(slot); });
+    slot.addEventListener('keydown', function (event) {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        openEventPhoto(slot);
+      }
+    });
+  });
+
+  closeButton.addEventListener('click', closeEventPhoto);
+  lightbox.addEventListener('click', function (event) {
+    if (event.target === lightbox) closeEventPhoto();
+  });
+  document.addEventListener('keydown', function (event) {
+    if (event.key === 'Escape' && lightbox.classList.contains('open')) closeEventPhoto();
+  });
+})();
+</script>
+</body>
+</html>

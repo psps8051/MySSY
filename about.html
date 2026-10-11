@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>About Us · स्वास्थ्यसिद्धी योग</title>
+  <link rel="stylesheet" href="style.css"/>
+  <style>
+    @media (max-width: 640px) {
+      .story-stats  { grid-template-columns: 1fr 1fr !important; }
+      .story-blocks { grid-template-columns: 1fr !important; }
+    }
+  </style>
+
+<style>
+.img-fallback-gold {
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:600;
+  color:#C8861A;text-align:center;padding:0.75rem;z-index:0;
+}
+.img-fallback-green {
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:600;
+  color:#2D6A2D;text-align:center;padding:0.75rem;z-index:0;
+}
+.img-fallback-circle-gold {
+  position:absolute;display:flex;align-items:center;justify-content:center;
+  font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:700;
+  color:#C8861A;z-index:0;
+}
+.img-fallback-circle-green {
+  position:absolute;display:flex;align-items:center;justify-content:center;
+  font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:700;
+  color:#2D6A2D;z-index:0;
+}
+.img-cover {
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;
+}
+.img-cover-circle {
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:50%;z-index:1;
+}
+</style>
+</head>
+<body>
+<div id="nav-holder"></div>
+<div class="page-body">
+
+  <!-- Page Hero -->
+  <div class="page-hero">
+    <div class="page-hero-inner">
+      <div class="breadcrumb"><a href="index.html">Home</a> &nbsp;/&nbsp; About Us</div>
+      <h1>Rooted in tradition,<br><em>alive</em> in the present.</h1>
+      <p>Over a decade of nurturing a community of mindful movers — from 4 members to Community of 1000+ and growing.</p>
+    </div>
+  </div>
+
+  <!-- Our Story -->
+  <section class="section" style="background:var(--white)">
+    <div class="section-inner">
+
+      <!-- Intro grid: text + image duo -->
+      <div class="about-story-grid reveal">
+        <div>
+          <span class="section-label">Our Story</span>
+          <h2 class="section-title">From 4 members to<br>a <em>thriving</em> community of 1000+</h2>
+          <div class="divider"></div>
+          <p class="section-body">Our journey began under the guidance of Yoga Guru Shri Bapu Borotikar Sir on <strong>1st November 2011</strong>. In these 15+ glorious years, our member strength has grown from just 4 to 125 who practice yoga every single day. Our classes have benefited hundreds of fitness enthusiasts, senior citizens, and pregnant women till date.</p>
+          <p class="section-body" style="margin-top:1rem;">Our aim is to spread awareness of yoga in daily life — not just for physical and mental health, but for spiritual and social wellbeing too. With that vision, we conduct four different batches in mornings and evenings so members can find time for yoga within their busy schedules.</p>
+        </div>
+        <div class="about-img-duo">
+          <div class="img-block" style="aspect-ratio:3/4;overflow:hidden;">Our Studio</div>
+          <div class="img-block" style="aspect-ratio:3/4;overflow:hidden;">Yoga Practice</div>
+        </div>
+      </div>
+
+      <!-- Stats strip -->
+      <div class="reveal story-stats" style="display:grid; grid-template-columns:repeat(4,1fr); gap:1.5rem; margin-top:4rem; max-width:var(--max-w);">
+        <div style="text-align:center; padding:1.75rem 1rem; background:var(--terr-pale); border-radius:var(--radius-lg);">
+          <div style="font-family:'Cormorant Garamond',serif; font-size:2.925rem; font-weight:600; color:var(--terracotta); line-height:1;">2011</div>
+          <div style="font-size:0.845rem; letter-spacing:0.14em; text-transform:uppercase; color:var(--warm-gray); margin-top:0.3rem;">Founded</div>
+        </div>
+        <div style="text-align:center; padding:1.75rem 1rem; background:var(--sage-pale); border-radius:var(--radius-lg);">
+          <div style="font-family:'Cormorant Garamond',serif; font-size:2.925rem; font-weight:600; color:var(--sage); line-height:1;">125+</div>
+          <div style="font-size:0.845rem; letter-spacing:0.14em; text-transform:uppercase; color:var(--warm-gray); margin-top:0.3rem;">Active Members</div>
+        </div>
+        <div style="text-align:center; padding:1.75rem 1rem; background:var(--terr-pale); border-radius:var(--radius-lg);">
+          <div style="font-family:'Cormorant Garamond',serif; font-size:2.925rem; font-weight:600; color:var(--terracotta); line-height:1;">6</div>
+          <div style="font-size:0.845rem; letter-spacing:0.14em; text-transform:uppercase; color:var(--warm-gray); margin-top:0.3rem;">Daily Batches (Online/Offline)</div>
+        </div>
+        <div style="text-align:center; padding:1.75rem 1rem; background:var(--sage-pale); border-radius:var(--radius-lg);">
+          <div style="font-family:'Cormorant Garamond',serif; font-size:2.925rem; font-weight:600; color:var(--sage); line-height:1;">15+</div>
+          <div style="font-size:0.845rem; letter-spacing:0.14em; text-transform:uppercase; color:var(--warm-gray); margin-top:0.3rem;">Years of Practice</div>
+        </div>
+      </div>
+
+      <!-- Highlight blocks -->
+      <div class="reveal story-blocks" style="display:grid; grid-template-columns:1fr 1fr; gap:1.5rem; margin-top:1.5rem; max-width:var(--max-w);">
+
+        <div style="background:var(--cream); border-radius:var(--radius-lg); padding:2rem; border-left:4px solid var(--terracotta);">
+          <div style="font-size:1.625rem; margin-bottom:0.75rem;">🌸</div>
+          <div style="font-family:'Cormorant Garamond',serif; font-size:1.375rem; color:var(--charcoal); margin-bottom:0.5rem;">Specialised Batches</div>
+          <p style="font-size:1.005rem; font-weight:300; line-height:1.75; color:var(--warm-gray);">Dedicated regular batches for <strong>Senior Citizens</strong> and <strong>Pregnant Women</strong> cater to their specific needs. Our Meditation batch helps members achieve mind relaxation and overcome daily stress. Yoga Therapy sessions are also arranged to address individual health concerns.</p>
+        </div>
+
+        <div style="background:var(--cream); border-radius:var(--radius-lg); padding:2rem; border-left:4px solid var(--sage);">
+          <div style="font-size:1.625rem; margin-bottom:0.75rem;">👩</div>
+          <div style="font-family:'Cormorant Garamond',serif; font-size:1.375rem; color:var(--charcoal); margin-bottom:0.5rem;">Women's Health &amp; Wellness</div>
+          <p style="font-size:1.005rem; font-weight:300; line-height:1.75; color:var(--warm-gray);">Special attention is given to improving women's health, fitness, and ability to handle hormonal changes. Women ranging from <strong>18 to 75 years of age</strong> are benefiting from yoga practices through regular exercise at our centre.</p>
+        </div>
+
+        <div style="background:var(--cream); border-radius:var(--radius-lg); padding:2rem; border-left:4px solid var(--terracotta);">
+          <div style="font-size:1.625rem; margin-bottom:0.75rem;">🎉</div>
+          <div style="font-family:'Cormorant Garamond',serif; font-size:1.375rem; color:var(--charcoal); margin-bottom:0.5rem;">Community &amp; Social Health</div>
+          <p style="font-size:1.005rem; font-weight:300; line-height:1.75; color:var(--warm-gray);">We celebrate together throughout the year — <strong>Yoga Day, Suryanamaskar Day, Women's Day, Gurupurnima, Dandiya</strong> and <strong>Bhondla</strong> bring all members closer. We also arrange a happiness trip every year for all batches.</p>
+        </div>
+
+        <div style="background:var(--cream); border-radius:var(--radius-lg); padding:2rem; border-left:4px solid var(--sage);">
+          <div style="font-size:1.625rem; margin-bottom:0.75rem;">🤲</div>
+          <div style="font-family:'Cormorant Garamond',serif; font-size:1.375rem; color:var(--charcoal); margin-bottom:0.5rem;">Service to Society</div>
+          <p style="font-size:1.005rem; font-weight:300; line-height:1.75; color:var(--warm-gray);">We believe in giving back. During the COVID pandemic we conducted a <strong>free 15-day yoga camp</strong> for prevention and recovery, receiving an overwhelming response and positive feedback from the community.</p>
+        </div>
+
+      </div>
+
+      <!-- Online/Offline note -->
+      <div class="reveal" style="margin-top:1.5rem; max-width:var(--max-w); background:#1a3a1a; border-radius:var(--radius-lg); padding:2rem 2.5rem; display:flex; align-items:center; gap:1.5rem; flex-wrap:wrap;">
+        <div style="font-size:2.125rem; flex-shrink:0;">💻</div>
+        <div>
+          <div style="font-family:'Cormorant Garamond',serif; font-size:1.425rem; color:var(--charcoal); margin-bottom:0.35rem;">Online &amp; Offline — Your Choice</div>
+          <p style="font-size:1.025rem; font-weight:300; color:rgba(255,255,255,0.6); line-height:1.7; margin:0;">The pandemic encouraged us to take our classes online for everyone's safety. Today we conduct both <strong style="color:var(--terr-lt);">Online as well as Offline</strong> classes, giving our members the flexibility to practice from wherever they are.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- CTA -->
+  <div class="home-contact-strip reveal">
+    <h2>Come be a part of our journey.</h2>
+    <p>Whether you're a beginner or a regular practitioner, there's a batch here for you — online or at the studio.</p>
+    <a class="btn btn-white" href="contact.html">Get in Touch →</a>
+  </div>
+
+</div>
+<div id="footer-holder"></div>
+<script src="shared.js"></script>
+<script>initPage('about.html');</script>
+</body>
+</html>

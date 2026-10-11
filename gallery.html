@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Gallery · स्वास्थ्यसिद्धी योग</title>
+  <link rel="stylesheet" href="style.css"/>
+  <style>
+    .gallery-filters {
+      display: flex; gap: 0.5rem; flex-wrap: wrap;
+      margin-bottom: 3rem;
+    }
+    .filter-btn {
+      font-size: 0.845rem; font-weight: 500; letter-spacing: 0.12em;
+      text-transform: uppercase; padding: 0.5rem 1.2rem;
+      border-radius: 99px; border: 1.5px solid var(--sand-dk);
+      background: transparent; color: var(--warm-gray); cursor: pointer;
+      transition: all 0.2s;
+    }
+    .filter-btn:hover, .filter-btn.active {
+      background: var(--terracotta); border-color: var(--terracotta);
+      color: var(--white);
+    }
+    .gallery-caption {
+      text-align: center; margin-top: 4rem;
+      font-size: 0.975rem; font-weight: 300; color: var(--warm-gray);
+    }
+    /* Lightbox */
+    .lightbox {
+      display: none; position: fixed; inset: 0; z-index: 999;
+      background: rgba(26,26,24,0.95);
+      align-items: center; justify-content: center;
+    }
+    .lightbox.open { display: flex; }
+    .lightbox-inner {
+      max-width: 720px; width: 90%; text-align: center;
+    }
+    .lightbox-img {
+      width: 100%; aspect-ratio: 4/3; border-radius: var(--radius-lg);
+      overflow: hidden; background: var(--sage-pale); margin-bottom: 1rem;
+    }
+    .lightbox-title { font-family: 'Cormorant Garamond', serif; font-size: 1.625rem; color: var(--white); margin-bottom: 0.25rem; }
+    .lightbox-sub { font-size: 0.925rem; color: var(--warm-gray); }
+    .lightbox-close {
+      position: absolute; top: 2rem; right: 2rem;
+      background: none; border: none; color: rgba(255,255,255,0.6);
+      font-size: 2.125rem; cursor: pointer; transition: color 0.2s;
+    }
+    .lightbox-close:hover { color: var(--white); }
+  </style>
+
+<style>
+.img-fallback-gold {
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:600;
+  color:#C8861A;text-align:center;padding:0.75rem;z-index:0;
+}
+.img-fallback-green {
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:600;
+  color:#2D6A2D;text-align:center;padding:0.75rem;z-index:0;
+}
+.img-fallback-circle-gold {
+  position:absolute;display:flex;align-items:center;justify-content:center;
+  font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:700;
+  color:#C8861A;z-index:0;
+}
+.img-fallback-circle-green {
+  position:absolute;display:flex;align-items:center;justify-content:center;
+  font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:700;
+  color:#2D6A2D;z-index:0;
+}
+.img-cover {
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;
+}
+.img-cover-circle {
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:50%;z-index:1;
+}
+</style>
+</head>
+<body>
+<div id="nav-holder"></div>
+<div class="page-body">
+
+  <div class="page-hero">
+    <div class="page-hero-inner">
+      <div class="breadcrumb"><a href="index.html">Home</a> &nbsp;/&nbsp; Gallery</div>
+      <h1>A place to<br><em>breathe</em> fully.</h1>
+      <p>Peek inside our studio, our community, and the moments that make Praana Yoga special.</p>
+    </div>
+  </div>
+
+  <section class="section" style="background:var(--cream)">
+    <div class="section-inner">
+      <div class="gallery-filters reveal">
+        <button class="filter-btn active" onclick="filterGallery('all', this)">All</button>
+        <button class="filter-btn" onclick="filterGallery('studio', this)">Studio Space</button>
+        <button class="filter-btn" onclick="filterGallery('classes', this)">Classes</button>
+        <button class="filter-btn" onclick="filterGallery('events', this)">Events</button>
+        <button class="filter-btn" onclick="filterGallery('nature', this)">Nature & Retreat</button>
+      </div>
+
+      <div class="gallery-masonry reveal" id="galleryGrid">
+
+        <div class="gallery-item h3" data-cat="studio" onclick="openLightbox('The Main Practice Hall', 'Natural light, bamboo floors, and space for 20 students.', this)">
+
+          <div style="position:relative;width:100%;height:100%;min-height:480px;background:#d4ecd4;overflow:hidden;display:flex;align-items:center;justify-content:center;">
+    <span style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:600;color:#2D6A2D;text-align:center;padding:0.75rem;z-index:0;">Practice Hall</span>
+    <img src="gallery-hall.jpg" alt="Main Practice Hall" class="img-cover" onload="this.previousElementSibling.style.display='none'">
+</div>
+    <div class="gallery-item-overlay"><span>Main Practice Hall</span></div>
+        </div>
+
+        <div class="gallery-item h2" data-cat="classes" onclick="openLightbox('Vinyasa Flow Class', 'Morning Vinyasa with Rohan — the best start to any day.', this)">
+
+          <div style="position:relative;width:100%;height:100%;min-height:380px;background:#fef4e0;overflow:hidden;display:flex;align-items:center;justify-content:center;">
+    <span style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:600;color:#C8861A;text-align:center;padding:0.75rem;z-index:0;">Vinyasa Flow</span>
+    <img src="gallery-vinyasa.jpg" alt="Vinyasa Flow" class="img-cover" onload="this.previousElementSibling.style.display='none'">
+</div>
+    <div class="gallery-item-overlay"><span>Vinyasa Flow</span></div>
+        </div>
+
+        <div class="gallery-item h1" data-cat="studio" onclick="openLightbox('Reception & Tea Corner', 'Where students gather before and after class.', this)">
+
+          <div style="position:relative;width:100%;height:100%;min-height:260px;background:#d4ecd4;overflow:hidden;display:flex;align-items:center;justify-content:center;">
+    <span style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:600;color:#2D6A2D;text-align:center;padding:0.75rem;z-index:0;">Reception</span>
+    <img src="gallery-reception.jpg" alt="Reception" class="img-cover" onload="this.previousElementSibling.style.display='none'">
+</div>
+    <div class="gallery-item-overlay"><span>Reception</span></div>
+        </div>
+
+        <div class="gallery-item h2" data-cat="events" onclick="openLightbox('Summer Solstice Sadhana 2024', '108 sun salutations at sunrise — unforgettable.', this)">
+
+          <div style="position:relative;width:100%;height:100%;min-height:380px;background:#fef4e0;overflow:hidden;display:flex;align-items:center;justify-content:center;">
+    <span style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:600;color:#C8861A;text-align:center;padding:0.75rem;z-index:0;">Solstice 2024</span>
+    <img src="gallery-solstice.jpg" alt="Solstice Sadhana 2024" class="img-cover" onload="this.previousElementSibling.style.display='none'">
+</div>
+    <div class="gallery-item-overlay"><span>Solstice Sadhana 2024</span></div>
+        </div>
+
+<!--  SSP Temp hide sample photo
+        <div class="gallery-item h1" data-cat="nature" onclick="openLightbox('Mahabaleshwar Retreat', 'The monsoon hills, morning mist, and shared silence.', this)">
+
+          <div style="position:relative;width:100%;height:100%;min-height:260px;background:#d4ecd4;overflow:hidden;display:flex;align-items:center;justify-content:center;">
+    <span style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:600;color:#2D6A2D;text-align:center;padding:0.75rem;z-index:0;">Retreat</span>
+    <img src="gallery-retreat.jpg" alt="Monsoon Retreat" class="img-cover" onload="this.previousElementSibling.style.display='none'">
+</div>
+    <div class="gallery-item-overlay"><span>Monsoon Retreat</span></div>
+        </div>
+-->
+
+<div class="gallery-item h1" data-cat="nature" onclick="openLightbox('', '', this)">
+
+          <div style="position:relative;width:100%;height:100%;min-height:260px;background:#d4ecd4;overflow:hidden;display:flex;align-items:center;justify-content:center;">
+    <span style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:600;color:#2D6A2D;text-align:center;padding:0.75rem;z-index:0;">Retreat</span>
+    <img src="./images/Retreat1.jpg" alt="Retreat1" class="img-cover" onload="this.previousElementSibling.style.display='none'">
+</div>
+    <div class="gallery-item-overlay"><span>Picnic and Outing</span></div>
+        </div>
+
+<div class="gallery-item h1" data-cat="nature" onclick="openLightbox('', '', this)">
+
+          <div style="position:relative;width:100%;height:100%;min-height:260px;background:#d4ecd4;overflow:hidden;display:flex;align-items:center;justify-content:center;">
+    <span style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:600;color:#2D6A2D;text-align:center;padding:0.75rem;z-index:0;">Retreat</span>
+    <img src="./images/Retreat2.jpg" alt="Retreat2" class="img-cover" onload="this.previousElementSibling.style.display='none'">
+</div>
+    <div class="gallery-item-overlay"><span>Picnic and Outing</span></div>
+        </div>
+
+<div class="gallery-item h1" data-cat="nature" onclick="openLightbox('', '', this)">
+
+          <div style="position:relative;width:100%;height:100%;min-height:260px;background:#d4ecd4;overflow:hidden;display:flex;align-items:center;justify-content:center;">
+    <span style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:600;color:#2D6A2D;text-align:center;padding:0.75rem;z-index:0;">Retreat</span>
+    <img src="./images/Retreat3.jpg" alt="Retreat3" class="img-cover" onload="this.previousElementSibling.style.display='none'">
+</div>
+    <div class="gallery-item-overlay"><span>Picnic and Outing</span></div>
+        </div>
+
+<div class="gallery-item h1" data-cat="nature" onclick="openLightbox('', '', this)">
+
+          <div style="position:relative;width:100%;height:100%;min-height:260px;background:#d4ecd4;overflow:hidden;display:flex;align-items:center;justify-content:center;">
+    <span style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:600;color:#2D6A2D;text-align:center;padding:0.75rem;z-index:0;">Retreat</span>
+    <img src="./images/Retreat4.jpg" alt="Retreat4" class="img-cover" onload="this.previousElementSibling.style.display='none'">
+</div>
+    <div class="gallery-item-overlay"><span>Picnic and Outing</span></div>
+        </div>
+
+<div class="gallery-item h1" data-cat="nature" onclick="openLightbox('', '', this)">
+
+          <div style="position:relative;width:100%;height:100%;min-height:260px;background:#d4ecd4;overflow:hidden;display:flex;align-items:center;justify-content:center;">
+    <span style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:600;color:#2D6A2D;text-align:center;padding:0.75rem;z-index:0;">Retreat</span>
+    <img src="./images/Retreat5.jpg" alt="Retreat5" class="img-cover" onload="this.previousElementSibling.style.display='none'">
+</div>
+    <div class="gallery-item-overlay"><span>Picnic and Outing</span></div>
+        </div>
+
+<div class="gallery-item h1" data-cat="nature" onclick="openLightbox('', '', this)">
+
+          <div style="position:relative;width:100%;height:100%;min-height:260px;background:#d4ecd4;overflow:hidden;display:flex;align-items:center;justify-content:center;">
+    <span style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:600;color:#2D6A2D;text-align:center;padding:0.75rem;z-index:0;">Retreat</span>
+    <img src="./images/Retreat6.jpg" alt="Retreat6" class="img-cover" onload="this.previousElementSibling.style.display='none'">
+</div>
+    <div class="gallery-item-overlay"><span>Picnic and Outing</span></div>
+        </div>
+
+
+<div class="gallery-item h1" data-cat="nature" onclick="openLightbox('', '', this)">
+
+          <div style="position:relative;width:100%;height:100%;min-height:260px;background:#d4ecd4;overflow:hidden;display:flex;align-items:center;justify-content:center;">
+    <span style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:600;color:#2D6A2D;text-align:center;padding:0.75rem;z-index:0;">Retreat</span>
+    <img src="./images/Retreat8.jpg" alt="Retreat8" class="img-cover" onload="this.previousElementSibling.style.display='none'">
+</div>
+    <div class="gallery-item-overlay"><span>Picnic and Outing</span></div>
+        </div>
+<div class="gallery-item h1" data-cat="nature" onclick="openLightbox('', '', this)">
+
+          <div style="position:relative;width:100%;height:100%;min-height:260px;background:#d4ecd4;overflow:hidden;display:flex;align-items:center;justify-content:center;">
+    <span style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:600;color:#2D6A2D;text-align:center;padding:0.75rem;z-index:0;">Retreat</span>
+    <img src="./images/Retreat9.jpg" alt="Retreat9" class="img-cover" onload="this.previousElementSibling.style.display='none'">
+</div>
+    <div class="gallery-item-overlay"><span>Picnic and Outing</span></div>
+        </div>
+
+
+        <div class="gallery-item h3" data-cat="classes" onclick="openLightbox('Pranayama Session', 'Priya leading the morning breathwork circle.', this)">
+
+          <div style="position:relative;width:100%;height:100%;min-height:480px;background:#d4ecd4;overflow:hidden;display:flex;align-items:center;justify-content:center;">
+    <span style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:600;color:#2D6A2D;text-align:center;padding:0.75rem;z-index:0;">Pranayama</span>
+    <img src="gallery-pranayama.jpg" alt="Pranayama" class="img-cover" onload="this.previousElementSibling.style.display='none'">
+</div>
+    <div class="gallery-item-overlay"><span>Pranayama</span></div>
+        </div>
+
+        <div class="gallery-item h2" data-cat="studio" onclick="openLightbox('Meditation Cave', 'Our dedicated meditation room — 8 cushions, complete silence.', this)">
+
+          <div style="position:relative;width:100%;height:100%;min-height:380px;background:#fef4e0;overflow:hidden;display:flex;align-items:center;justify-content:center;">
+    <span style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:600;color:#C8861A;text-align:center;padding:0.75rem;z-index:0;">Meditation</span>
+    <img src="gallery-meditation.jpg" alt="Meditation Cave" class="img-cover" onload="this.previousElementSibling.style.display='none'">
+</div>
+    <div class="gallery-item-overlay"><span>Meditation Cave</span></div>
+        </div>
+
+        <div class="gallery-item h1" data-cat="events" onclick="openLightbox('Full Moon Sound Bath', 'Candlelight, Tibetan bowls, and 18 students in deep rest.', this)">
+
+          <div style="position:relative;width:100%;height:100%;min-height:260px;background:#fef4e0;overflow:hidden;display:flex;align-items:center;justify-content:center;">
+    <span style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:600;color:#C8861A;text-align:center;padding:0.75rem;z-index:0;">Sound Bath</span>
+    <img src="gallery-soundbath.jpg" alt="Full Moon Sound Bath" class="img-cover" onload="this.previousElementSibling.style.display='none'">
+</div>
+    <div class="gallery-item-overlay"><span>Full Moon Sound Bath</span></div>
+        </div>
+
+      </div>
+
+      <p class="gallery-caption reveal">Click any image to view details. New photos added every month — follow us on Instagram @praanayogapune</p>
+    </div>
+  </section>
+
+</div>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
+  <button class="lightbox-close" onclick="document.getElementById('lightbox').classList.remove('open')">✕</button>
+  <div class="lightbox-inner">
+    <div class="lightbox-img ph">
+      <svg width="80" height="80" viewBox="0 0 64 64" fill="none"><text x="32" y="40" text-anchor="middle" font-family="serif" font-size="32" fill="rgba(200,134,26,0.3)">ॐ</text></svg>
+    </div>
+    <div class="lightbox-title" id="lbTitle"></div>
+    <div class="lightbox-sub" id="lbSub"></div>
+  </div>
+</div>
+
+<div id="footer-holder"></div>
+<script src="shared.js"></script>
+<script>
+initPage('gallery.html');
+
+function filterGallery(cat, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.gallery-item').forEach(item => {
+    if (cat === 'all' || item.dataset.cat === cat) {
+      item.style.display = '';
+    } else {
+      item.style.display = 'none';
+    }
+  });
+}
+
+function openLightbox(title, sub, item) {
+  const lightbox = document.getElementById('lightbox');
+  const titleElement = document.getElementById('lbTitle');
+  const subElement = document.getElementById('lbSub');
+  const imageContainer = document.querySelector('.lightbox-img');
+  const thumbnail = item ? item.querySelector('img') : null;
+  const overlayLabel = item ? item.querySelector('.gallery-item-overlay span') : null;
+
+  // Use the supplied caption when available; fall back to the card/image label.
+  titleElement.textContent = (title || '').trim()
+    || (overlayLabel ? overlayLabel.textContent.trim() : '')
+    || (thumbnail && thumbnail.alt ? thumbnail.alt.trim() : 'Gallery photo');
+  subElement.textContent = (sub || '').trim();
+
+  // Replace the decorative Om placeholder with the actual clicked photo.
+  imageContainer.replaceChildren();
+  if (thumbnail && thumbnail.getAttribute('src')) {
+    const fullImage = document.createElement('img');
+    fullImage.src = thumbnail.currentSrc || thumbnail.src;
+    fullImage.alt = thumbnail.alt || titleElement.textContent;
+    fullImage.style.cssText = 'display:block;width:100%;height:100%;object-fit:contain;';
+    fullImage.addEventListener('error', function () {
+      const fallback = document.createElement('div');
+      fallback.textContent = 'Photo could not be loaded. Please check the image file path.';
+      fallback.style.cssText = 'display:flex;align-items:center;justify-content:center;width:100%;height:100%;padding:1.5rem;color:#fff;text-align:center;';
+      imageContainer.replaceChildren(fallback);
+    }, { once: true });
+    imageContainer.appendChild(fullImage);
+  } else {
+    const fallback = document.createElement('div');
+    fallback.textContent = 'No photo is attached to this gallery item.';
+    fallback.style.cssText = 'display:flex;align-items:center;justify-content:center;width:100%;height:100%;padding:1.5rem;color:#fff;text-align:center;';
+    imageContainer.appendChild(fallback);
+  }
+
+  lightbox.classList.add('open');
+}
+function closeLightbox(e) {
+  if (e.target === document.getElementById('lightbox')) {
+    document.getElementById('lightbox').classList.remove('open');
+  }
+}
+</script>
+</body>
+</html>

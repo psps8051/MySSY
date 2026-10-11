@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Our Team · स्वास्थ्यसिद्धी योग</title>
+  <link rel="stylesheet" href="style.css"/>
+  <style>
+    /* ── Option C: Centered circle avatar cards ── */
+    .team-c-grid {
+      display: flex; flex-direction: column;
+      gap: 2rem; max-width: var(--max-w); margin: 0 auto;
+    }
+
+    /* Full-width card (AP & BB) */
+    .tc-card-full {
+      background: var(--white);
+      border-radius: 20px;
+      padding: 2.5rem 2rem;
+      text-align: center;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .tc-card-full:hover { transform: translateY(-4px); box-shadow: 0 20px 56px rgba(14,34,14,0.1); }
+
+    /* Two-column row (SK + NM) */
+    .tc-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+
+    /* Pair card */
+    .tc-card-pair {
+      background: var(--white);
+      border-radius: 20px;
+      padding: 2rem 1.5rem;
+      text-align: center;
+      border: 1px solid var(--sand);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .tc-card-pair:hover { transform: translateY(-4px); box-shadow: 0 16px 44px rgba(14,34,14,0.09); }
+
+    /* Avatar circle */
+    .tc-avatar,
+    .tc-avatar-sm {
+      position: relative;
+      border-radius: 50%;
+      overflow: hidden;
+      box-sizing: border-box;
+      padding: 0;
+      flex: 0 0 auto;
+      aspect-ratio: 1 / 1;
+      isolation: isolate;
+    }
+    .tc-avatar {
+      width: 96px; height: 96px;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 1.25rem;
+      font-size: 2.525rem;
+    }
+    .tc-avatar-sm {
+      width: 76px; height: 76px;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 1rem;
+      font-size: 2.025rem;
+    }
+    /* Keep every portrait clipped to the circular avatar, including inline-sized avatars. */
+    .tc-avatar > img,
+    .tc-avatar-sm > img {
+      position: absolute;
+      inset: 0;
+      display: block;
+      width: 100%;
+      height: 100%;
+      max-width: none;
+      object-fit: cover;
+      object-position: center;
+      border-radius: 50%;
+    }
+    /* Placeholder content follows the same circular crop. */
+    .tc-avatar .ph, .tc-avatar-sm .ph {
+      width: 100%; height: 100%; border-radius: 50%; overflow: hidden;
+    }
+
+    .tc-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.125rem; font-weight: 400;
+      color: var(--charcoal); margin-bottom: 0.2rem;
+    }
+    .tc-name-sm {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.775rem; font-weight: 400;
+      color: var(--charcoal); margin-bottom: 0.2rem;
+    }
+    .tc-role {
+      font-size: 0.825rem; font-weight: 600;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+    .tc-quote {
+      font-size: 1.075rem; font-style: italic;
+      color: var(--charcoal); margin-bottom: 0.65rem;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.275rem; line-height: 1.5;
+    }
+    .tc-bio {
+      font-size: 1.025rem; font-weight: 300;
+      line-height: 1.8; color: var(--warm-gray);
+      max-width: 560px; margin: 0 auto 1.25rem;
+    }
+    .tc-bio-sm {
+      font-size: 0.975rem; font-weight: 300;
+      line-height: 1.75; color: var(--warm-gray);
+      margin-bottom: 1.1rem;
+    }
+    .tc-certs {
+      display: flex; flex-wrap: wrap; gap: 0.5rem;
+      justify-content: center;
+    }
+    .tc-cert {
+      font-size: 0.805rem; font-weight: 500;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 0.3rem 0.9rem; border-radius: 99px;
+    }
+
+    /* AP — gold/saffron */
+    .tc-ap { border: 2px solid rgba(200,134,26,0.35); background: linear-gradient(160deg, var(--white) 0%, var(--terr-pale) 100%); }
+    .tc-ap .tc-avatar { background: var(--terr-pale); border: 3px solid rgba(200,134,26,0.3); }
+    .tc-ap .tc-role { color: var(--terracotta); }
+    .tc-ap .tc-cert { background: var(--terr-pale); color: var(--terracotta); border: 1px solid rgba(200,134,26,0.2); }
+
+    /* SK & NM — forest green */
+    .tc-sk, .tc-nm { border: 1px solid rgba(58,125,53,0.2); }
+    .tc-sk .tc-avatar-sm, .tc-nm .tc-avatar-sm { background: var(--sage-pale); border: 3px solid rgba(58,125,53,0.2); }
+    .tc-sk .tc-role, .tc-nm .tc-role { color: var(--sage); }
+    .tc-sk .tc-cert, .tc-nm .tc-cert { background: var(--sage-pale); color: var(--sage); border: 1px solid rgba(58,125,53,0.2); }
+
+    /* BB — guru gold with warm bg */
+    .tc-bb { border: 2px solid rgba(200,134,26,0.4); background: linear-gradient(160deg, var(--terr-pale) 0%, var(--white) 60%, var(--terr-pale) 100%); }
+    .tc-bb .tc-avatar { background: var(--terr-pale); border: 3px solid rgba(200,134,26,0.35); font-size: 2.925rem; }
+    .tc-bb .tc-role { color: var(--terracotta); }
+    .tc-bb .tc-cert { background: var(--terr-pale); color: var(--terracotta); border: 1px solid rgba(200,134,26,0.25); }
+
+    /* Divider accent */
+    .tc-divider {
+      width: 40px; height: 2px;
+      background: var(--terracotta);
+      border-radius: 2px;
+      margin: 0.9rem auto;
+    }
+    .tc-divider.green { background: var(--sage); }
+
+    @media (max-width: 640px) {
+      .tc-pair { grid-template-columns: 1fr; }
+      .tc-card-full, .tc-card-pair { padding: 1.75rem 1.25rem; }
+      .tc-avatar { width: 80px; height: 80px; }
+      .tc-avatar-sm { width: 64px; height: 64px; }
+    }
+  </style>
+
+<style>
+.img-fallback-gold {
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:600;
+  color:#C8861A;text-align:center;padding:0.75rem;z-index:0;
+}
+.img-fallback-green {
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:600;
+  color:#2D6A2D;text-align:center;padding:0.75rem;z-index:0;
+}
+.img-fallback-circle-gold {
+  position:absolute;display:flex;align-items:center;justify-content:center;
+  font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:700;
+  color:#C8861A;z-index:0;
+}
+.img-fallback-circle-green {
+  position:absolute;display:flex;align-items:center;justify-content:center;
+  font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:700;
+  color:#2D6A2D;z-index:0;
+}
+.img-cover {
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;
+}
+.img-cover-circle {
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:50%;z-index:1;
+}
+</style>
+
+<style>
+  /* Clickable team portraits and full-size photo viewer */
+  .tc-avatar > img,
+  .tc-avatar-sm > img { cursor: zoom-in; }
+  .tc-avatar > img:focus-visible,
+  .tc-avatar-sm > img:focus-visible {
+    outline: 3px solid var(--terracotta);
+    outline-offset: 4px;
+  }
+  .team-photo-lightbox {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 3000;
+    padding: 64px 20px 24px;
+    background: rgba(12, 18, 13, .94);
+    align-items: center;
+    justify-content: center;
+  }
+  .team-photo-lightbox.open { display: flex; }
+  .team-photo-lightbox-inner {
+    width: min(1100px, 96vw);
+    max-height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+  }
+  .team-photo-lightbox-image {
+    display: block;
+    max-width: 100%;
+    max-height: calc(100vh - 140px);
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    border-radius: 12px;
+    box-shadow: 0 12px 48px rgba(0, 0, 0, .35);
+  }
+  .team-photo-lightbox-caption {
+    margin: 0;
+    color: #fff;
+    text-align: center;
+    font-size: 1rem;
+  }
+  .team-photo-lightbox-close {
+    position: absolute;
+    top: 12px;
+    right: 20px;
+    width: 44px;
+    height: 44px;
+    border: 1px solid rgba(255,255,255,.45);
+    border-radius: 50%;
+    color: #fff;
+    background: rgba(255,255,255,.08);
+    font-size: 28px;
+    line-height: 1;
+    cursor: pointer;
+  }
+  .team-photo-lightbox-close:hover { background: rgba(255,255,255,.2); }
+  body.team-photo-popup-open { overflow: hidden; }
+  @media (max-width: 480px) {
+    .team-photo-lightbox { padding: 60px 12px 18px; }
+    .team-photo-lightbox-image { max-height: calc(100vh - 135px); }
+  }
+</style>
+
+
+<style>
+  /* Rounded vertical portrait frames: keeps more of the face and shoulders visible. */
+  .tc-avatar,
+  .tc-avatar-sm {
+    aspect-ratio: 4 / 5 !important;
+    border-radius: 16px !important;
+    overflow: hidden !important;
+    position: relative;
+    flex-shrink: 0;
+    isolation: isolate;
+  }
+
+  .tc-avatar > img,
+  .tc-avatar-sm > img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover !important;
+    object-position: center top !important;
+    border-radius: 12px !important;
+  }
+
+  /* Slightly smaller vertical portraits on phones while retaining the 4:5 shape. */
+  @media (max-width: 640px) {
+    .tc-card-full .tc-avatar {
+      width: min(120px, 40vw) !important;
+      height: auto !important;
+    }
+    .tc-avatar-sm {
+      width: min(96px, 34vw) !important;
+      height: auto !important;
+    }
+  }
+</style>
+
+</head>
+<body>
+<div id="nav-holder"></div>
+<div class="page-body">
+
+  <div class="page-hero">
+    <div class="page-hero-inner">
+      <div class="breadcrumb"><a href="index.html">Home</a> &nbsp;/&nbsp; Our Team</div>
+      <h1>Guided by those who<br><em>live</em> the practice.</h1>
+      <p>Each teacher brings years of dedicated study, a personal practice, and genuine care for every student who walks through our doors.</p>
+    </div>
+  </div>
+
+  <section class="section" style="background:var(--cream);">
+    <div class="section-inner">
+      <div class="team-c-grid">
+
+        <!-- ── AP — Founder · Full width ── -->
+        <div class="tc-card-full tc-ap reveal">
+          <div class="tc-avatar" style="width:140px;height:175px;border:4px solid rgba(200,134,26,0.4);background:var(--terr-pale);">
+            <img src="./images/team-ap.jpg"
+                 alt="AP — Founder & Lead Teacher"
+                
+                 style="width:100%;height:100%;object-fit:cover;border-radius:50%;">
+          </div>
+          <div class="tc-name">Anita Patil</div>
+          <div class="tc-role">Founder &amp; Lead Teacher · Yoga Trainer &amp; Therapist</div>
+          <div class="tc-divider"></div>
+          <p class="tc-bio">Since the last 20 years, she has been dedicatedly and sincerely spreading the health benefits of yogic practices. She is passionate about inspiring participants to improve their wellness and commit to long-term health and fitness goals. Her ability to personally connect with students and her pleasant nature is what makes everyone feel comfortable.</p>
+          <div class="tc-certs">
+            <span class="tc-cert">YIC — Svyasa University, Bangalore</span>
+            <span class="tc-cert">M.Sc. Yoga — Svyasa University</span>
+            <span class="tc-cert">Power Yoga Certificate</span>
+            <span class="tc-cert">Integrated Dietetics — SPPU, Pune</span>
+          </div>
+        </div>
+
+        <!-- ── SK + NM — Side by side ── -->
+        <div class="tc-pair">
+
+          <div class="tc-card-pair tc-sk reveal">
+            <div class="tc-avatar-sm" style="width:110px;height:140px;border:3px solid rgba(58,125,53,0.35);background:var(--sage-pale);">
+              <img src="./images/team-sk.jpg"
+                   alt="SK — Yoga Teacher"
+                  
+                   style="width:100%;height:100%;object-fit:cover;border-radius:50%;">
+            </div>
+            <div class="tc-name-sm">Sujata Kulkarni</div>
+            <div class="tc-role">Yoga Teacher</div>
+            <div class="tc-divider green"></div>
+            <p class="tc-bio-sm">A well-prepared yoga instructor with a strong focus on perfection and discipline. Her structured, detail-oriented approach ensures that every student learns each posture and technique with clarity and confidence.</p>
+            <div class="tc-certs">
+              <span class="tc-cert">YIC — Svyasa University</span>
+              <span class="tc-cert">Certified Prenatal Yoga Teacher</span>
+            </div>
+          </div>
+
+          <div class="tc-card-pair tc-nm reveal">
+            <div class="tc-avatar-sm" style="width:110px;height:140px;border:3px solid rgba(58,125,53,0.35);background:var(--sage-pale);">
+              <img src="./images/team-nm.jpg"
+                   alt="NM — Yoga Teacher"
+                  
+                   style="width:100%;height:100%;object-fit:cover;border-radius:50%;">
+            </div>
+            <div class="tc-name-sm">Neha Mallewadikar</div>
+            <div class="tc-role">Yoga Teacher</div>
+            <div class="tc-divider green"></div>
+            <p class="tc-bio-sm">A peaceful and enthusiastic yoga instructor who brings a wonderful combination of positive energy and a soothing voice to every class. Her warmth and vibrant spirit make sessions feel both invigorating and deeply calming.</p>
+            <div class="tc-certs">
+              <span class="tc-cert">YIC — Svyasa University</span>
+              <span class="tc-cert">Certified Reiki Master</span>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- ── BB — Guru · Full width ── -->
+        <div class="tc-card-full tc-bb reveal">
+          <div class="tc-avatar" style="width:140px;height:175px;border:4px solid rgba(200,134,26,0.4);background:var(--terr-pale);">
+            <img src="./images/team-bb.jpg"
+                 alt="BB — Inspiration, Our Guru"
+                
+                 style="width:100%;height:100%;object-fit:cover;border-radius:50%;">
+          </div>
+          <div class="tc-name">Dr. Bapu Borotikar</div>
+          <div class="tc-role">Inspiration — Our Guru</div>
+          <div class="tc-divider"></div>
+          <p class="tc-quote">"Devoted, encouraging, motivational, calm and humble."</p>
+          <p class="tc-bio">Working in the field of yoga for the last 30 years, he is a devoted and encouraging presence whose teaching style is simple and patient with every student's level of understanding. A true inspiration to all of us.</p>
+          <div class="tc-certs">
+            <span class="tc-cert">YIC — Svyasa University, Bangalore</span>
+            <span class="tc-cert">M.Sc. Yoga — Svyasa University</span>
+            <span class="tc-cert">PhD in Yoga — SPPU, Pune</span>
+            <span class="tc-cert">30 Years in Yoga</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- Team portrait lightbox -->
+<div class="team-photo-lightbox" id="teamPhotoLightbox" role="dialog" aria-modal="true" aria-hidden="true" aria-label="Team portrait viewer">
+  <button class="team-photo-lightbox-close" id="teamPhotoLightboxClose" type="button" aria-label="Close photo">&times;</button>
+  <div class="team-photo-lightbox-inner">
+    <img class="team-photo-lightbox-image" id="teamPhotoLightboxImage" alt="">
+    <p class="team-photo-lightbox-caption" id="teamPhotoLightboxCaption"></p>
+  </div>
+</div>
+
+<div id="footer-holder"></div>
+<script src="shared.js"></script>
+<script>initPage('team.html');</script>
+
+<script>
+(function () {
+  const lightbox = document.getElementById('teamPhotoLightbox');
+  const lightboxImage = document.getElementById('teamPhotoLightboxImage');
+  const lightboxCaption = document.getElementById('teamPhotoLightboxCaption');
+  const closeButton = document.getElementById('teamPhotoLightboxClose');
+  const portraits = document.querySelectorAll('.tc-avatar > img, .tc-avatar-sm > img');
+  let lastTrigger = null;
+
+  function openTeamPhoto(portrait) {
+    lastTrigger = portrait;
+    const caption = portrait.alt || 'Team portrait';
+    lightboxImage.src = portrait.currentSrc || portrait.src;
+    lightboxImage.alt = caption;
+    lightboxCaption.textContent = caption;
+    lightbox.classList.add('open');
+    lightbox.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('team-photo-popup-open');
+    closeButton.focus();
+  }
+
+  function closeTeamPhoto() {
+    lightbox.classList.remove('open');
+    lightbox.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('team-photo-popup-open');
+    lightboxImage.removeAttribute('src');
+    if (lastTrigger) lastTrigger.focus();
+  }
+
+  portraits.forEach(function (portrait) {
+    portrait.setAttribute('tabindex', '0');
+    portrait.setAttribute('role', 'button');
+    portrait.setAttribute('aria-label', 'Open full-size photo: ' + (portrait.alt || 'Team portrait'));
+    portrait.addEventListener('click', function () { openTeamPhoto(portrait); });
+    portrait.addEventListener('keydown', function (event) {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        openTeamPhoto(portrait);
+      }
+    });
+  });
+
+  closeButton.addEventListener('click', closeTeamPhoto);
+  lightbox.addEventListener('click', function (event) {
+    if (event.target === lightbox) closeTeamPhoto();
+  });
+  document.addEventListener('keydown', function (event) {
+    if (event.key === 'Escape' && lightbox.classList.contains('open')) closeTeamPhoto();
+  });
+})();
+</script>
+
+</body>
+</html>
